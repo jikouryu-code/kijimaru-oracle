@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>キジ丸神様 数秘オラクルカード</title>
+<style>
+body{
+  margin:0;
+  font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+  background:linear-gradient(#fff8e8,#f6e6c8);
+  color:#3b2a1a;
+  text-align:center;
+}
+.app{
+  max-width:430px;
+  margin:auto;
+  padding:24px;
+}
+h1{
+  color:#9b1c1f;
+  font-size:24px;
+  line-height:1.5;
+}
+.subtitle{
+  font-size:14px;
+  color:#6b4a2b;
+}
+input{
+  width:85%;
+  padding:14px;
+  font-size:18px;
+  border:2px solid #d4af37;
+  border-radius:12px;
+  margin:18px 0;
+}
+button{
+  width:88%;
+  padding:14px;
+  font-size:18px;
+  font-weight:bold;
+  background:#9b1c1f;
+  color:white;
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+}
+.result{
+  display:none;
+  margin-top:24px;
+  background:#fffaf0;
+  border:2px solid #d4af37;
+  border-radius:18px;
+  padding:18px;
+}
+.number{
+  font-size:54px;
+  color:#d4af37;
+  font-weight:bold;
+}
+.title{
+  font-size:22px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+.card{
+  width:100%;
+  max-width:320px;
+  border-radius:14px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.25);
+  margin:12px auto;
+}
+.desc{
+  text-align:left;
+  line-height:1.8;
+  font-size:15px;
+}
+.link{
+  display:inline-block;
+  margin-top:18px;
+  padding:12px 18px;
+  background:#d4af37;
+  color:#3b2a1a;
+  text-decoration:none;
+  border-radius:12px;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h1>キジ丸神様<br>数秘オラクルカード</h1>
+  <p class="subtitle">生年月日から、あなたの数字とカードを導きます</p>
+
+  <input type="date" id="birthday">
+  <br>
+  <button onclick="calculate()">カードを受け取る</button>
+
+  <div class="result" id="result">
+    <div>あなたの数字</div>
+    <div class="number" id="number"></div>
+    <div class="title" id="title"></div>
+    <img id="cardImage" class="card">
+    <div class="desc" id="desc"></div>
+    <a class="link" href="キジ丸神様_数秘オラクルカードガイド.pdf" target="_blank">
+      詳しいガイドを見る
+    </a>
+  </div>
+</div>
+
+<script>
+const data = {
+  1:{title:"1 開拓者", img:"キジ丸オラクルカード/1.jpg", desc:"自分の力で人生を切り開いていく人。行動力と決断力が魅力です。"},
+  2:{title:"2 調和者", img:"キジ丸オラクルカード/2.jpg", desc:"人と人を繋ぐ優しい人。調和と共感力が魅力です。"},
+  3:{title:"3 創造者", img:"キジ丸オラクルカード/3.jpg", desc:"人生を楽しむ才能を持つ人。明るさと創造力が魅力です。"},
+  4:{title:"4 建築家", img:"キジ丸オラクルカード/4.jpg", desc:"物事を着実に積み上げる人。信頼と安定感が魅力です。"},
+  5:{title:"5 冒険家", img:"キジ丸オラクルカード/5.jpg", desc:"自由を愛し変化を楽しむ人。行動力と柔軟性が魅力です。"},
+  6:{title:"6 育む者", img:"キジ丸オラクルカード/6.jpg", desc:"愛情深く人を大切にする人。優しさと包容力が魅力です。"},
+  7:{title:"7 探求者", img:"キジ丸オラクルカード/7.jpg", desc:"物事の本質を知りたい人。洞察力と知恵が魅力です。"},
+  8:{title:"8 経営者", img:"キジ丸オラクルカード/8.jpg", desc:"大きな目標を現実にする人。実行力と豊かさの力が魅力です。"},
+  9:{title:"9 賢者", img:"キジ丸オラクルカード/9.jpg", desc:"広い視野と深い優しさを持つ人。包容力と人生の知恵が魅力です。"},
+  11:{title:"11 啓示者", img:"キジ丸オラクルカード/11.jpg", desc:"直感やひらめきに恵まれた人。人の心に光を灯す力があります。"},
+  22:{title:"22 夢の設計者", img:"キジ丸オラクルカード/22.jpg", desc:"大きな夢を現実へ変える人。未来を創り出す力があります。"},
+  33:{title:"33 宇宙の癒し手", img:"キジ丸オラクルカード/33.jpg", desc:"大きな愛を持って生まれた人。無条件の愛と癒しの力があります。"}
+};
+
+function calculate(){
+  const birthday = document.getElementById("birthday").value;
+  if(!birthday){
+    alert("生年月日を入力してください");
+    return;
+  }
+
+  let digits = birthday.replaceAll("-","");
+  let total = 0;
+
+  for(let i=0; i<digits.length; i++){
+    total += Number(digits[i]);
+  }
+
+  while(total > 9 && total !== 11 && total !== 22 && total !== 33){
+    total = String(total).split("").reduce((sum,n)=>sum+Number(n),0);
+  }
+
+  const result = data[total];
+
+  document.getElementById("number").innerText = total;
+  document.getElementById("title").innerText = result.title;
+  document.getElementById("cardImage").src = result.img;
+  document.getElementById("desc").innerText = result.desc;
+  document.getElementById("result").style.display = "block";
+}
+</script>
+</body>
+</html>
